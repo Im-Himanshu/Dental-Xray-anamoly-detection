@@ -228,7 +228,6 @@ if __name__ == "__main__":
     model.train()
     num_epochs = 13
     summary(model, input_size=(1, 3, 1615, 840))  # Batch size of 1
-    print_model= False
     for epoch in range(num_epochs):
         total_loss = 0.0
         for batch_idx, (images, targets) in enumerate(dataloader):
@@ -250,17 +249,14 @@ if __name__ == "__main__":
             optimizer.step()
 
             total_loss += loss.item()
-            if not print_model:
-                summary(model, input_size=(1, 3, 1615, 840))  # Batch size of 1
-                print_model= True
 
-        # Log results to TensorBoard
-        if epoch % 3 == 0:
-            output_masks = torch.argmax(outputs, dim=1, keepdim=True)  # Predicted masks
-            overlay_image = overlay_masks_on_image(images[0], output_masks)
-            writer.add_image("Input with Masks", transforms.ToTensor()(overlay_image),
-                             global_step=epoch * len(dataloader) + batch_idx)
-        print(f"Epoch {epoch + 1}/{num_epochs}, Loss: {total_loss / len(dataloader):.4f}")
+            # Log results to TensorBoard
+            if epoch % 3 == 0:
+                output_masks = torch.argmax(outputs, dim=1, keepdim=True)  # Predicted masks
+                overlay_image = overlay_masks_on_image(images[0], output_masks)
+                writer.add_image("Input with Masks", transforms.ToTensor()(overlay_image),
+                                 global_step=epoch * len(dataloader) + batch_idx)
+            print(f"Epoch {epoch + 1}/{num_epochs}, Loss: {total_loss / len(dataloader):.4f}")
         writer.add_scalar("Loss/train", total_loss / len(dataloader), epoch)
 
     # Save the model after training
