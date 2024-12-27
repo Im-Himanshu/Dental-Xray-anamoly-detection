@@ -8,35 +8,53 @@ import os
 from torch.utils.tensorboard import SummaryWriter
 from torchinfo import summary
 
-class DentNet(nn.Module):
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class DentNetFPN(nn.Module):
     def __init__(self, resnet_backbone, num_classes):
-        super(DentNet, self).__init__()
+        super(DentNetFPN, self).__init__()
 
-        # Use the ResNet backbone, excluding the fully connected layer
-        self.backbone = nn.Sequential(*list(resnet_backbone.children())[:-2])
+        # Use specific layers from the ResNet backbone for FPN
+        self.layer1 = nn.Sequential(*list(resnet_backbone.children())[:5])  # Low-level features
+        self.layer2 = nn.Sequential(*list(resnet_backbone.children())[5])  # Mid-level features
+        self.layer3 = nn.Sequential(*list(resnet_backbone.children())[6])  # High-level features
 
-        # Add a 1x1 convolution to reduce feature map dimensions to num_classes
-        self.conv1x1 = nn.Conv2d(resnet_backbone.fc.in_features, num_classes, kernel_size=1)
+        # 1x1 convolutions for feature dimension alignment
+        self.conv1x1_1 = nn.Conv2d(256, 256, kernel_size=1)  # Layer1 output channels
+        self.conv1x1_2 = nn.Conv2d(512, 256, kernel_size=1)  # Layer2 output channels
+        self.conv1x1_3 = nn.Conv2d(1024, 256, kernel_size=1)  # Layer3 output channels
 
-        # Dynamically calculate the upsample scale factor based on the ResNet's downsampling
-        # self.downsample_factor = self._get_downsample_factor(resnet_backbone)
-        self.upsample = nn.Upsample(scale_factor=32, mode='bilinear', align_corners=False)
+        # 3x3 convolutions for refining upsampled features
+        self.conv3x3_1 = nn.Conv2d(256, 256, kernel_size=3, padding=1)
+        self.conv3x3_2 = nn.Conv2d(256, 256, kernel_size=3, padding=1)
 
+        # Final 1x1 convolution for class predictions
+        self.final_conv = nn.Conv2d(256, num_classes, kernel_size=1)
 
     def forward(self, x):
-        # Store the input size for dynamic resizing
-        input_size = x.size()[2:]  # (Height, Width)
+        input_size = x.size()[2:]  # Store input size for dynamic resizing
 
-        # Pass input through the ResNet backbone
-        features = self.backbone(x)
+        # Extract features from different levels
+        low_level_feat = self.layer1(x)  # Layer1 features
+        mid_level_feat = self.layer2(low_level_feat)  # Layer2 features
+        high_level_feat = self.layer3(mid_level_feat)  # Layer3 features
 
-        # Apply the 1x1 convolution for class prediction
-        logits = self.conv1x1(features)
+        # FPN-like feature merging
+        high_level_up = F.interpolate(self.conv1x1_3(high_level_feat), size=mid_level_feat.size()[2:], mode='bilinear', align_corners=False)
+        mid_level_out = self.conv1x1_2(mid_level_feat) + high_level_up
+        mid_level_out = self.conv3x3_1(mid_level_out)
 
-        # Dynamically resize the output to match the input size
-        output = F.interpolate(logits, size=input_size, mode='bilinear', align_corners=False)
+        mid_level_up = F.interpolate(mid_level_out, size=low_level_feat.size()[2:], mode='bilinear', align_corners=False)
+        low_level_out = self.conv1x1_1(low_level_feat) + mid_level_up
+        low_level_out = self.conv3x3_2(low_level_out)
+
+        # Final upsampling to match the input size
+        output = F.interpolate(self.final_conv(low_level_out), size=input_size, mode='bilinear', align_corners=False)
 
         return output
+
 
 
 
@@ -127,7 +145,7 @@ if __name__ == "__main__":
     resnet_backbone = resnet_versions[resnet_version](pretrained=True)
 
     # Instantiate the DentNet with two output channels (teeth and anomaly segmentation)
-    model = DentNet(resnet_backbone, num_classes=2)
+    model = DentNetFPN(resnet_backbone, num_classes=2)
     summary(model, input_size=(1, 3, 1615, 840))  # Batch size of 1
     # Directories for data
     radiograph_dir = "../TUFTS-project/Radiographs"
