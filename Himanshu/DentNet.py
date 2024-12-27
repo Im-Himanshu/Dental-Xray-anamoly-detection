@@ -8,9 +8,12 @@ import os
 from torch.utils.tensorboard import SummaryWriter
 from torchinfo import summary
 
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+
+import numpy as np
 
 class DentNetFPN(nn.Module):
     def __init__(self, resnet_backbone, num_classes):
@@ -21,19 +24,36 @@ class DentNetFPN(nn.Module):
         self.layer2 = nn.Sequential(*list(resnet_backbone.children())[5])  # Mid-level features
         self.layer3 = nn.Sequential(*list(resnet_backbone.children())[6])  # High-level features
 
-        # 1x1 convolutions for feature dimension alignment
-        self.conv1x1_1 = nn.Conv2d(256, 256, kernel_size=1)  # Layer1 output channels
-        self.conv1x1_2 = nn.Conv2d(512, 256, kernel_size=1)  # Layer2 output channels
-        self.conv1x1_3 = nn.Conv2d(1024, 256, kernel_size=1)  # Layer3 output channels
-
-        # 3x3 convolutions for refining upsampled features
-        self.conv3x3_1 = nn.Conv2d(256, 256, kernel_size=3, padding=1)
-        self.conv3x3_2 = nn.Conv2d(256, 256, kernel_size=3, padding=1)
-
+        # Placeholder for dynamically calculated channels
+        self.conv1x1_1 = None
+        self.conv1x1_2 = None
+        self.conv1x1_3 = None
+        self.num_classes = num_classes
         # Final 1x1 convolution for class predictions
-        self.final_conv = nn.Conv2d(256, num_classes, kernel_size=1)
+        self.final_conv = None #nn.Conv2d(None, num_classes, kernel_size=1)  # Will be dynamically initialized later
+
+    def _initialize_conv_layers(self, x):
+        """
+        Dynamically initialize convolution layers based on feature map sizes.
+        """
+        # Pass input through each layer to infer channel sizes
+        low_level_feat = self.layer1(x)
+        mid_level_feat = self.layer2(low_level_feat)
+        high_level_feat = self.layer3(mid_level_feat)
+
+        # Initialize 1x1 convolutions with dynamic input channels
+        self.conv1x1_1 = nn.Conv2d(low_level_feat.size(1), 256, kernel_size=1)
+        self.conv1x1_2 = nn.Conv2d(mid_level_feat.size(1), 256, kernel_size=1)
+        self.conv1x1_3 = nn.Conv2d(high_level_feat.size(1), 256, kernel_size=1)
+
+        # Initialize final_conv with dynamic input channels
+        self.final_conv = nn.Conv2d(256, self.num_classes, kernel_size=1)
 
     def forward(self, x):
+        # Initialize convolution layers dynamically on the first pass
+        if self.conv1x1_1 is None:
+            self._initialize_conv_layers(x)
+
         input_size = x.size()[2:]  # Store input size for dynamic resizing
 
         # Extract features from different levels
@@ -44,17 +64,14 @@ class DentNetFPN(nn.Module):
         # FPN-like feature merging
         high_level_up = F.interpolate(self.conv1x1_3(high_level_feat), size=mid_level_feat.size()[2:], mode='bilinear', align_corners=False)
         mid_level_out = self.conv1x1_2(mid_level_feat) + high_level_up
-        mid_level_out = self.conv3x3_1(mid_level_out)
 
         mid_level_up = F.interpolate(mid_level_out, size=low_level_feat.size()[2:], mode='bilinear', align_corners=False)
         low_level_out = self.conv1x1_1(low_level_feat) + mid_level_up
-        low_level_out = self.conv3x3_2(low_level_out)
 
         # Final upsampling to match the input size
         output = F.interpolate(self.final_conv(low_level_out), size=input_size, mode='bilinear', align_corners=False)
 
         return output
-
 
 
 
@@ -130,6 +147,46 @@ def overlay_masks_on_image(image, masks):
     return image
 
 
+
+# Utility function to overlay masks on images
+def overlay_masks_on_image(image, masks):
+    """
+    Overlay single-channel masks on an RGB image using specified colors.
+
+    Args:
+        image (torch.Tensor): The input image tensor (C, H, W) in the range [0, 1].
+        masks (list of torch.Tensor): List of single-channel mask tensors (H, W), each with values 0 or 1.
+
+    Returns:
+        PIL.Image: The input image with overlaid masks.
+    """
+    # Convert the input image tensor to a PIL Image
+    image = transforms.ToPILImage()(image.cpu().clone())
+    image = image.convert("RGB")  # Ensure the image is in RGB mode
+
+    # Initialize a blank image for the composite mask
+    composite_mask = Image.new("RGB", image.size)
+
+    # Colors for each mask
+    mask_colors = [(255, 0, 0), (0, 255, 0)]  # Red for mask 1, Green for mask 2
+
+    for i, mask in enumerate(masks):
+        # Ensure mask is uint8 and scaled to [0, 255]
+        mask = mask.cpu().numpy().astype(np.uint8) * 255
+
+        # Convert the mask to a PIL Image and colorize it
+        mask_pil = Image.fromarray(mask, mode="L")  # Grayscale mask
+        color_mask = Image.new("RGB", mask_pil.size, color=mask_colors[i])  # Apply color
+        colored_mask = Image.composite(color_mask, composite_mask, mask_pil)
+
+        # Blend the colorized mask into the composite mask
+        composite_mask = Image.blend(composite_mask, colored_mask, alpha=0.5)
+
+    # Blend the composite mask onto the original image
+    output_image = Image.blend(image, composite_mask, alpha=0.5)
+
+    return output_image
+
 # Training script
 if __name__ == "__main__":
     # Allow for flexibility in selecting ResNet versions
@@ -146,7 +203,6 @@ if __name__ == "__main__":
 
     # Instantiate the DentNet with two output channels (teeth and anomaly segmentation)
     model = DentNetFPN(resnet_backbone, num_classes=2)
-    summary(model, input_size=(1, 3, 1615, 840))  # Batch size of 1
     # Directories for data
     radiograph_dir = "../TUFTS-project/Radiographs"
     segmentation_dir = "../TUFTS-project/Segmentation/teeth_mask/"
@@ -170,7 +226,9 @@ if __name__ == "__main__":
 
     # Training loop
     model.train()
-    num_epochs = 10
+    num_epochs = 13
+    summary(model, input_size=(1, 3, 1615, 840))  # Batch size of 1
+    print_model= False
     for epoch in range(num_epochs):
         total_loss = 0.0
         for batch_idx, (images, targets) in enumerate(dataloader):
@@ -192,14 +250,16 @@ if __name__ == "__main__":
             optimizer.step()
 
             total_loss += loss.item()
+            if not print_model:
+                summary(model, input_size=(1, 3, 1615, 840))  # Batch size of 1
+                print_model= True
 
-            # Log results to TensorBoard
-            if batch_idx % 10 == 0:
-                output_masks = torch.argmax(outputs, dim=1, keepdim=True)  # Predicted masks
-                overlay_image = overlay_masks_on_image(images[0], output_masks)
-                writer.add_image("Input with Masks", transforms.ToTensor()(overlay_image),
-                                 global_step=epoch * len(dataloader) + batch_idx)
-
+        # Log results to TensorBoard
+        if epoch % 3 == 0:
+            output_masks = torch.argmax(outputs, dim=1, keepdim=True)  # Predicted masks
+            overlay_image = overlay_masks_on_image(images[0], output_masks)
+            writer.add_image("Input with Masks", transforms.ToTensor()(overlay_image),
+                             global_step=epoch * len(dataloader) + batch_idx)
         print(f"Epoch {epoch + 1}/{num_epochs}, Loss: {total_loss / len(dataloader):.4f}")
         writer.add_scalar("Loss/train", total_loss / len(dataloader), epoch)
 
