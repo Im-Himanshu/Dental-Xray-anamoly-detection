@@ -80,20 +80,51 @@ We have fine tuned the Yolox model for 200 epochs on TUFTS dataset with training
 🔍 Our process  outperforms both the YOLOv5s and FCN baselines reported in the Tufts paper.
 
 ### 📉 Precision, Recall & F1 Curves
-<p><strong>Bounding Box Metrics</strong></p>
-<p float="left">
-  <img src="./assets/BoxF1_curve.png" alt="F1 vs Confidence" style="width:200; margin-right:1%;">
-  <img src="./assets/BoxP_curve.png" alt="Precision vs Confidence" style="width:200; margin-right:1%;">
-  <img src="./assets/BoxPR_curve.png" alt="Precision-Recall Curve" style="width:200; margin-right:1%;">
-  <img src="./assets/BoxR_curve.png" alt="Recall vs Confidence" style="width:200;">
-</p>
-<p><strong>Mask Segmentation Metrics</strong></p>
-<p float="left">
-  <img src="./assets/MaskF1_curve.png" alt="F1 vs Confidence" style="width:200; margin-right:1%;">
-  <img src="./assets/MaskP_curve.png" alt="Precision vs Confidence" style="width:200; margin-right:1%;">
-  <img src="./assets/MaskPR_curve.png" alt="Precision-Recall Curve" style="width:200; margin-right:1%;">
-  <img src="./assets/MaskR_curve.png" alt="Recall vs Confidence" style="width:200;">
-</p>
+<!-- Bounding Box Metrics -->
+**Bounding Box Metrics**
+<table>
+  <tr>
+    <td style="text-align: center;">
+      <p>F1 vs Confidence:</p>
+      <img src="./assets/BoxF1_curve.png" alt="F1 vs Confidence" width="250">
+    </td>
+    <td style="text-align: center;">
+      <p>Precision vs Confidence:</p>
+      <img src="./assets/BoxP_curve.png" alt="Precision vs Confidence" width="250">
+    </td>
+    <td style="text-align: center;">
+      <p>Precision-Recall Curve:</p>
+      <img src="./assets/BoxPR_curve.png" alt="Precision-Recall Curve" width="250">
+    </td>
+    <td style="text-align: center;">
+      <p>Recall vs Confidence:</p>
+      <img src="./assets/BoxR_curve.png" alt="Recall vs Confidence" width="250">
+    </td>
+  </tr>
+</table>
+
+<!-- Mask Segmentation Metrics -->
+**Mask Segmentation Metrics**
+<table>
+  <tr>
+    <td style="text-align: center;">
+      <p>F1 vs Confidence:</p>
+      <img src="./assets/MaskF1_curve.png" alt="F1 vs Confidence" width="250">
+    </td>
+    <td style="text-align: center;">
+      <p>Precision vs Confidence:</p>
+      <img src="./assets/MaskP_curve.png" alt="Precision vs Confidence" width="250">
+    </td>
+    <td style="text-align: center;">
+      <p>Precision-Recall Curve:</p>
+      <img src="./assets/MaskPR_curve.png" alt="Precision-Recall Curve" width="250">
+    </td>
+    <td style="text-align: center;">
+      <p>Recall vs Confidence:</p>
+      <img src="./assets/MaskR_curve.png" alt="Recall vs Confidence" width="250">
+    </td>
+  </tr>
+</table>
 
 
 ---
