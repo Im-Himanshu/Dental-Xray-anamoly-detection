@@ -1,23 +1,11 @@
 
-# Dental Anomaly Detection using YOLOv8 Object Detection and Segmentation
+# Dental Anomaly Detection using YOLOv8 Segmentation
 - ![val_batch2_pred.jpg](assets/val_batch2_pred.jpg)
 
 This project uses the **Tufts Dental Database: A Multimodal Panoramic X-Ray Dataset** to detect dental anomalies such as missing teeth, implants, or lesions using a YOLOv8-based pipeline combining both object detection and mask segmentation. We have reported the performance of our model which is greater then some of the best reported acadmeic work on TUFTS dataset.
 
 ---
 
-## 📦 Dataset
-
-**Source**: [Tufts Dental Database](https://arxiv.org/abs/2312.06226)
-
-**Details**:
-- Panoramic dental X-rays (high resolution)
-- Annotated anomalies under the class label: `anomaly`
-- Available in YOLO format for bounding boxes and polygon format for segmentation
-- Distribution visualization: The image below shows the distribution of our labeled bounding box dataset. 
-![labels.jpg](assets/labels.jpg)
-
----
 ## 📚 Project Overview
 
 Our pipeline involves four sequential processing steps:
@@ -35,6 +23,18 @@ Our pipeline involves four sequential processing steps:
    Identifying and segmenting anomalies within the detected teeth regions.  
    ![overlay_anomalies.jpg](assets/overlay_anomalies.jpg)
 
+## 📦 Dataset
+
+**Source**: [Tufts Dental Database](https://arxiv.org/abs/2312.06226)
+
+**Details**:
+- Panoramic dental X-rays (high resolution)
+- Annotated anomalies under the class label: `anomaly`
+- Available in YOLO format for bounding boxes and polygon format for segmentation
+- Distribution visualization: The image below shows the distribution of our labeled bounding box dataset. 
+![labels.jpg](assets/labels.jpg)
+
+---
 ## 🧠 Model Pipeline
 
 | Task               | Model     | Description                                      |
