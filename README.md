@@ -7,21 +7,35 @@ This project uses the **Tufts Dental Database: A Multimodal Panoramic X-Ray Data
 ---
 
 ## 📚 Project Overview
+<p><strong>Our pipeline involves four sequential processing steps:</strong></p>
 
-Our pipeline involves four sequential processing steps:
+<table>
+  <tr>
+    <td style="vertical-align: top; padding: 10px;"><strong>1. Maxillomandibular Region Detection</strong><br>
+      Isolating the region of interest in the panoramic scan.
+    </td>
+    <td style="text-align: center; padding: 10px;">
+      <img src="assets/overlay_maxillomandibular.jpg" alt="Maxillomandibular Region" width="300">
+    </td>
+  </tr>
+  <tr>
+    <td style="vertical-align: top; padding: 10px;"><strong>2. Tooth Segmentation</strong><br>
+      Extracting the tooth structures from the X-ray for individual inspection.
+    </td>
+    <td style="text-align: center; padding: 10px;">
+      <img src="assets/overlay_teeth.jpg" alt="Tooth Segmentation" width="300">
+    </td>
+  </tr>
+  <tr>
+    <td style="vertical-align: top; padding: 10px;"><strong>3. Anomaly Detection</strong><br>
+      Identifying and segmenting anomalies within the detected teeth regions.
+    </td>
+    <td style="text-align: center; padding: 10px;">
+      <img src="assets/overlay_anomalies.jpg" alt="Anomaly Detection" width="300">
+    </td>
+  </tr>
+</table>
 
-1. **Maxillomandibular Region Detection**  
-   Isolating the region of interest in the panoramic scan.  
-   ![overlay_maxillomandibular.jpg](assets/overlay_maxillomandibular.jpg)
-
-
-2. **Tooth Segmentation**  
-   Extracting the tooth structures from the X-ray for individual inspection.  
-   ![overlay_teeth.jpg](assets/overlay_teeth.jpg)
-
-3. **Anomaly Detection**  
-   Identifying and segmenting anomalies within the detected teeth regions.  
-   ![overlay_anomalies.jpg](assets/overlay_anomalies.jpg)
 
 ## 📦 Dataset
 
@@ -162,14 +176,17 @@ We have fine tuned the Yolox model for 200 epochs on TUFTS dataset with training
 
 
 ### 📦 Ground Truth (Train)
-<div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap;">
-  <div style="flex: 1 1 25%; text-align: center; margin: 10px;">
-    <img src="./assets/train_batch2.jpg" alt="Train Batch 2" style="width: 100%;">
-  </div>
-  <div style="flex: 1 1 25%; text-align: center; margin: 10px;">
-    <img src="./assets/train_batch6082.jpg" alt="Train Batch 6082" style="width: 100%;">
-  </div>
-</div>
+<table>
+  <tr>
+    <td style="text-align: center;">
+      <img src="./assets/train_batch2.jpg" alt="Train Batch 2" width="300">
+    </td>
+    <td style="text-align: center;">
+      <img src="./assets/train_batch6082.jpg" alt="Train Batch 6082" width="300">
+    </td>
+  </tr>
+</table>
+
 
 ### 🧾 Ground Truth Labels (Validation)
 - ![val_batch2_labels.jpg](assets/val_batch2_labels.jpg)
