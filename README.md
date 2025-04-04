@@ -81,18 +81,18 @@ We have fine tuned the Yolox model for 200 epochs on TUFTS dataset with training
 
 ### 📉 Precision, Recall & F1 Curves
 <p><strong>Bounding Box Metrics</strong></p>
-<p>
-  <img src="./assets/BoxF1_curve.png" alt="F1 vs Confidence" style="width:23%; margin-right:1%;">
-  <img src="./assets/BoxP_curve.png" alt="Precision vs Confidence" style="width:23%; margin-right:1%;">
-  <img src="./assets/BoxPR_curve.png" alt="Precision-Recall Curve" style="width:23%; margin-right:1%;">
-  <img src="./assets/BoxR_curve.png" alt="Recall vs Confidence" style="width:23%;">
+<p float="left">
+  <img src="./assets/BoxF1_curve.png" alt="F1 vs Confidence" style="width:200; margin-right:1%;">
+  <img src="./assets/BoxP_curve.png" alt="Precision vs Confidence" style="width:200; margin-right:1%;">
+  <img src="./assets/BoxPR_curve.png" alt="Precision-Recall Curve" style="width:200; margin-right:1%;">
+  <img src="./assets/BoxR_curve.png" alt="Recall vs Confidence" style="width:200;">
 </p>
 <p><strong>Mask Segmentation Metrics</strong></p>
-<p>
-  <img src="./assets/MaskF1_curve.png" alt="F1 vs Confidence" style="width:23%; margin-right:1%;">
-  <img src="./assets/MaskP_curve.png" alt="Precision vs Confidence" style="width:23%; margin-right:1%;">
-  <img src="./assets/MaskPR_curve.png" alt="Precision-Recall Curve" style="width:23%; margin-right:1%;">
-  <img src="./assets/MaskR_curve.png" alt="Recall vs Confidence" style="width:23%;">
+<p float="left">
+  <img src="./assets/MaskF1_curve.png" alt="F1 vs Confidence" style="width:200; margin-right:1%;">
+  <img src="./assets/MaskP_curve.png" alt="Precision vs Confidence" style="width:200; margin-right:1%;">
+  <img src="./assets/MaskPR_curve.png" alt="Precision-Recall Curve" style="width:200; margin-right:1%;">
+  <img src="./assets/MaskR_curve.png" alt="Recall vs Confidence" style="width:200;">
 </p>
 
 
