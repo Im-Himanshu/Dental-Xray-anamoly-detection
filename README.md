@@ -144,16 +144,19 @@ We have fine tuned the Yolox model for 200 epochs on TUFTS dataset with training
 ---
 
 ## 📊 Confusion Matrix
-<div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap;">
-  <div style="flex: 1 1 45%; text-align: center; margin: 10px;">
-    <p>Raw Confusion Matrix:</p>
-    <img src="./assets/confusion_matrix.png" alt="Raw Confusion Matrix" style="width: 100%;">
-  </div>
-  <div style="flex: 1 1 45%; text-align: center; margin: 10px;">
-    <p>Normalized Confusion Matrix:</p>
-    <img src="./assets/confusion_matrix_normalized.png" alt="Normalized Confusion Matrix" style="width: 100%;">
-  </div>
-</div>
+<table>
+  <tr>
+    <td style="text-align: center; padding: 10px;">
+      <p><strong>Raw Confusion Matrix:</strong></p>
+      <img src="./assets/confusion_matrix.png" alt="Raw Confusion Matrix" width="300">
+    </td>
+    <td style="text-align: center; padding: 10px;">
+      <p><strong>Normalized Confusion Matrix:</strong></p>
+      <img src="./assets/confusion_matrix_normalized.png" alt="Normalized Confusion Matrix" width="300">
+    </td>
+  </tr>
+</table>
+
 
 **Insights**:
 - 93% of anomalies were correctly predicted.
