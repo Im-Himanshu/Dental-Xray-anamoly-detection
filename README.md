@@ -80,47 +80,21 @@ We have fine tuned the Yolox model for 200 epochs on TUFTS dataset with training
 🔍 Our process  outperforms both the YOLOv5s and FCN baselines reported in the Tufts paper.
 
 ### 📉 Precision, Recall & F1 Curves
+<p><strong>Bounding Box Metrics</strong></p>
+<p>
+  <img src="./assets/BoxF1_curve.png" alt="F1 vs Confidence" style="width:23%; margin-right:1%;">
+  <img src="./assets/BoxP_curve.png" alt="Precision vs Confidence" style="width:23%; margin-right:1%;">
+  <img src="./assets/BoxPR_curve.png" alt="Precision-Recall Curve" style="width:23%; margin-right:1%;">
+  <img src="./assets/BoxR_curve.png" alt="Recall vs Confidence" style="width:23%;">
+</p>
+<p><strong>Mask Segmentation Metrics</strong></p>
+<p>
+  <img src="./assets/MaskF1_curve.png" alt="F1 vs Confidence" style="width:23%; margin-right:1%;">
+  <img src="./assets/MaskP_curve.png" alt="Precision vs Confidence" style="width:23%; margin-right:1%;">
+  <img src="./assets/MaskPR_curve.png" alt="Precision-Recall Curve" style="width:23%; margin-right:1%;">
+  <img src="./assets/MaskR_curve.png" alt="Recall vs Confidence" style="width:23%;">
+</p>
 
-**Bounding Box Metrics**
-<div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap;">
-  <div style="flex: 1 1 22%; text-align: center; margin: 10px;">
-    <p>F1 vs Confidence:</p>
-    <img src="./assets/BoxF1_curve.png" alt="F1 vs Confidence" style="width: 100%;">
-  </div>
-  <div style="flex: 1 1 22%; text-align: center; margin: 10px;">
-    <p>Precision vs Confidence:</p>
-    <img src="./assets/BoxP_curve.png" alt="Precision vs Confidence" style="width: 100%;">
-  </div>
-  <div style="flex: 1 1 22%; text-align: center; margin: 10px;">
-    <p>Precision-Recall Curve:</p>
-    <img src="./assets/BoxPR_curve.png" alt="Precision-Recall Curve" style="width: 100%;">
-  </div>
-  <div style="flex: 1 1 22%; text-align: center; margin: 10px;">
-    <p>Recall vs Confidence:</p>
-    <img src="./assets/BoxR_curve.png" alt="Recall vs Confidence" style="width: 100%;">
-  </div>
-</div>
-
-
-**Mask Segmentation Metrics**
-<div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap;">
-  <div style="flex: 1 1 22%; text-align: center; margin: 10px;">
-    <p>F1 vs Confidence:</p>
-    <img src="./assets/MaskF1_curve.png" alt="F1 vs Confidence" style="width: 100%;">
-  </div>
-  <div style="flex: 1 1 22%; text-align: center; margin: 10px;">
-    <p>Precision vs Confidence:</p>
-    <img src="./assets/MaskP_curve.png" alt="Precision vs Confidence" style="width: 100%;">
-  </div>
-  <div style="flex: 1 1 22%; text-align: center; margin: 10px;">
-    <p>Precision-Recall Curve:</p>
-    <img src="./assets/MaskPR_curve.png" alt="Precision-Recall Curve" style="width: 100%;">
-  </div>
-  <div style="flex: 1 1 22%; text-align: center; margin: 10px;">
-    <p>Recall vs Confidence:</p>
-    <img src="./assets/MaskR_curve.png" alt="Recall vs Confidence" style="width: 100%;">
-  </div>
-</div>
 
 ---
 
@@ -128,11 +102,11 @@ We have fine tuned the Yolox model for 200 epochs on TUFTS dataset with training
 <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap;">
   <div style="flex: 1 1 45%; text-align: center; margin: 10px;">
     <p>Raw Confusion Matrix:</p>
-    <img src="confusion_matrix.png" alt="Raw Confusion Matrix" style="width: 100%;">
+    <img src="./assets/confusion_matrix.png" alt="Raw Confusion Matrix" style="width: 100%;">
   </div>
   <div style="flex: 1 1 45%; text-align: center; margin: 10px;">
     <p>Normalized Confusion Matrix:</p>
-    <img src="confusion_matrix_normalized.png" alt="Normalized Confusion Matrix" style="width: 100%;">
+    <img src="./assets/confusion_matrix_normalized.png" alt="Normalized Confusion Matrix" style="width: 100%;">
   </div>
 </div>
 
@@ -159,10 +133,10 @@ We have fine tuned the Yolox model for 200 epochs on TUFTS dataset with training
 ### 📦 Ground Truth (Train)
 <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap;">
   <div style="flex: 1 1 25%; text-align: center; margin: 10px;">
-    <img src="train_batch2.jpg" alt="Train Batch 2" style="width: 100%;">
+    <img src="./assets/train_batch2.jpg" alt="Train Batch 2" style="width: 100%;">
   </div>
   <div style="flex: 1 1 25%; text-align: center; margin: 10px;">
-    <img src="train_batch6082.jpg" alt="Train Batch 6082" style="width: 100%;">
+    <img src="./assets/train_batch6082.jpg" alt="Train Batch 6082" style="width: 100%;">
   </div>
 </div>
 
