@@ -81,7 +81,6 @@ We have fine tuned the Yolox model for 200 epochs on TUFTS dataset with training
 
 ### 📉 Precision, Recall & F1 Curves
 
-
 **Bounding Box Metrics**
 <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap;">
   <div style="flex: 1 1 22%; text-align: center; margin: 10px;">
@@ -129,11 +128,11 @@ We have fine tuned the Yolox model for 200 epochs on TUFTS dataset with training
 <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap;">
   <div style="flex: 1 1 45%; text-align: center; margin: 10px;">
     <p>Raw Confusion Matrix:</p>
-    <img src="./assets/confusion_matrix.png" alt="Raw Confusion Matrix" style="width: 100%;">
+    <img src="confusion_matrix.png" alt="Raw Confusion Matrix" style="width: 100%;">
   </div>
   <div style="flex: 1 1 45%; text-align: center; margin: 10px;">
     <p>Normalized Confusion Matrix:</p>
-    <img src="./assets/confusion_matrix_normalized.png" alt="Normalized Confusion Matrix" style="width: 100%;">
+    <img src="confusion_matrix_normalized.png" alt="Normalized Confusion Matrix" style="width: 100%;">
   </div>
 </div>
 
@@ -160,10 +159,10 @@ We have fine tuned the Yolox model for 200 epochs on TUFTS dataset with training
 ### 📦 Ground Truth (Train)
 <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap;">
   <div style="flex: 1 1 25%; text-align: center; margin: 10px;">
-    <img src="./assets/train_batch2.jpg" alt="Train Batch 2" style="width: 100%;">
+    <img src="train_batch2.jpg" alt="Train Batch 2" style="width: 100%;">
   </div>
   <div style="flex: 1 1 25%; text-align: center; margin: 10px;">
-    <img src="./assets/train_batch6082.jpg" alt="Train Batch 6082" style="width: 100%;">
+    <img src="train_batch6082.jpg" alt="Train Batch 6082" style="width: 100%;">
   </div>
 </div>
 
